@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cognizant.cvs.dao.DAOMapper">
+
+		<insert id="insertWorkItem" parameterType="com.cognizant.cvs.schema.WorkItemRequestType">
+		insert into
+		pharmacy.workitem
+		(workItemID,workItemStatus,orderID,newElement,orderStatus,clientid,prescriberName,prescriberId,prescriberstate)values
+		(#{workItemID},
+		#{workItemStatus},
+		#{order.orderID},
+		#{newElement},
+		#{order.orderStatus},
+		#{order.clientID},
+		#{order.prescriberDetails.name},
+		#{order.prescriberDetails.prescriberId},
+		#{order.prescriberDetails.state})
+	</insert>
+
+
+	<resultMap id="WorkItemRequestType" type="com.cognizant.cvs.schema.WorkItemRequestType">
+		<result property="workItemID" column="workItemID" />
+		<result property="workItemStatus" column="workItemStatus" />
+		<result property="order.orderID" column="orderID" />
+		<result property="newElement" column="newElement" />
+		<result property="order.orderStatus" column="orderStatus" />
+		<result property="order.clientID" column="clientid" />
+		<result property="order.prescriberDetails.name" column="prescriberName" />
+		<result property="order.prescriberDetails.prescriberId" column="prescriberId" />
+		<result property="order.prescriberDetails.state" column="prescriberstate" />
+	</resultMap>
+
+	<select id="getWorkItems" resultMap="WorkItemRequestType">
+		select * from
+		pharmacy.workitem
+	</select>
+
+	<resultMap id="lineItems" type="com.cognizant.cvs.schema.LineItemType">
+		<result property="drugName" column="drugName" />
+		<result property="quantity" column="quantity" />
+		<result property="rphId" column="rphId" />
+		<result property="orderID" column="orderID" />
+	</resultMap>
+
+	<select id="getLineItems" resultMap="lineItems">
+		select * from pharmacy.lineItems
+	</select>
+
+	<insert id="insertLineItems" parameterType="java.util.List">
+		INSERT
+		INTO pharmacy.lineItems(drugName,quantity,rphId,orderID) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.drugName},#{item.quantity},#{item.rphId},#{item.orderID})
+		</foreach>
+	</insert>
+
+	<update id="modifyOrderStatus" parameterType="com.cognizant.cvs.vo.ModifyWorkItemRequestParam">
+	
+		UPDATE pharmacy.workitem
+		SET
+		orderStatus= #{status},
+		workItemStatus = #{status}
+		WHERE orderID = #{orderId}
+	
+	</update>
+
+	
+</mapper>

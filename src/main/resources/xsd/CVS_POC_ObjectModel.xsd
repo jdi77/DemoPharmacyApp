@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/NewXMLSchema"
+	xmlns:tns="http://www.example.org/NewXMLSchema" elementFormDefault="qualified">
+
+	<complexType name="WorkItemRequestType">
+		<sequence>
+			<element name="WorkItemID" type="string"></element>
+			<element name="WorkItemStatus" type="string"></element>
+			<element name="order" type="tns:OrderType"></element>
+			<element name="NewElement" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="LineItemType">
+		<sequence>
+			<element name="drugName" type="string"></element>
+			<element name="quantity" type="string"></element>
+			<element name="rphId" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="OrderType">
+		<sequence>
+			<element name="orderStatus" type="string"></element>
+			<element name="orderID" type="string"></element>
+			<element name="clientID" type="string"></element>
+			<element name="prescriberDetails" type="tns:PrescriberDetailsType">
+			</element>
+			<element name="lineItems" type="tns:LineItemType" minOccurs="1"
+				maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="PrescriberDetailsType">
+		<sequence>
+			<element name="name" type="string"></element>
+			<element name="prescriberId" type="string"></element>
+			<element name="state" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="ProductType">
+		<sequence>
+			<element name="productId" type="string"></element>
+			<element name="productName" type="string"></element>
+			<element name="productDesc" type="string"></element>
+			<element name="productCode" type="string"></element>
+
+		</sequence>
+	</complexType>
+
+	<complexType name="RPHPDetailType">
+		<sequence>
+			<element name="certificationId" type="string"></element>
+			<element name="rphBackLog" type="string"></element>
+			<element name="rphId" type="string"></element>
+			<element name="rphWorkQueue" type="tns:workItemType" minOccurs="1" maxOccurs="unbounded"></element>
+			<element name="state" type="string"></element>
+			<element name="storeId" type="string"></element>
+			<element name="isEligible" type="boolean"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="StoreDetailType">
+		<sequence>
+			<element name="storeId" type="string"></element>
+			<element name="storeName" type="string"></element>
+			<element name="workLoadScore" type="string"></element>
+			<element name="storeCapacity" type="string"></element>
+			<element name="promiseHours" type="string"></element>
+			<element name="rphdetails" type="tns:RPHPDetailType" minOccurs="1" maxOccurs="unbounded"></element>
+			<element name="isAvailable" type="boolean"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="RPHWorkQueueType">
+		<sequence>
+			<element name="workItems" type="tns:WorkItemRequestType"
+				minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="RPHDetails">
+		<sequence>
+			<element name="rphdetails" type="tns:RPHPDetailType"
+				minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	<complexType name="StoreDetails">
+		<sequence>
+			<element name="storedetails" type="tns:StoreDetailType"
+				minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<element name="workItemRequest" type="tns:WorkItemRequestType"></element>
+
+    <element name="rphDetails" type="tns:RPHDetails"></element>
+	<element name="storeDetails" type="tns:StoreDetails"></element>
+
+	<complexType name="workItemType">
+		<sequence>
+			<element name="workItemID" type="string"></element>
+			<element name="workItemType" type="string"></element>
+			<element name="workItemStatus" type="string"></element>
+			<element name="lineItem" type="tns:LineItemType"></element>
+		</sequence>
+	</complexType>
+</schema>

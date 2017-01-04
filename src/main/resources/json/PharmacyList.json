@@ -1,0 +1,64 @@
+{
+	"pharmacyList": [{
+		"id": "Pharmacy1",
+		"state": "GA",
+		"pharmacists": [{
+			"id": "RPH1",
+			"state": "GA",
+			"certification": "Msc",
+			"pharmacyId": "Pharmacy1",
+			"workItems": [{
+				"id": "WorkItem1",
+				"clientId": "Client1",
+				"status": "PENDING",
+				"state": "GA",
+				"lineItems": [{
+					"id": "LineItem1",
+					"name": "John",
+					"orderId": "Order1",
+					"state": "GA"
+				}]
+			}]
+		}]
+	},
+	{
+		"id": "Pharmacy2",
+		"state": "CO",
+		"pharmacists": [{
+			"id": "RPH2",
+			"state": "CO",
+			"certification": "Msc",
+			"pharmacyId": "Pharmacy2",
+			"workItems": [{
+				"id": "WorkItem2",
+				"clientId": "Client2",
+				"status": "PENDING",
+				"state": "CO",
+				"lineItems": [{
+					"id": "LineItem2",
+					"name": "James",
+					"orderId": "Order2",
+					"state": "CO"
+				}]
+			}]
+		},
+		{
+			"id": "RPH3",
+			"state": "CO",
+			"certification": "Msc",
+			"pharmacyId": "Pharmacy2",
+			"workItems": [{
+				"id": "WorkItem3",
+				"clientId": "Client2",
+				"status": "IN_PROGRESS",
+				"state": "CO",
+				"lineItems": [{
+					"id": "LineItem3",
+					"name": "Jack",
+					"orderId": "Order3",
+					"state": "CO"
+				}]
+			}]
+		}]
+	}]
+}
