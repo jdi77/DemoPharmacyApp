@@ -1,6 +1,8 @@
 package com.cognizant.cvs.controller;
 
 import static com.cognizant.cvs.vo.PharmacyPharmacistWrapper.newPharmacyPharmacistWrapper;
+import static com.cognizant.cvs.vo.StatusCodes.CANCEL;
+import static com.cognizant.cvs.vo.StatusCodes.REVOKE;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -54,10 +56,7 @@ public class PharmacyController {
 		try {
 			WorkItemRequestType workItem = new WorkItemRequestType(requestWorkItem.getWorkItemID(),
 					requestWorkItem.getWorkItemStatus(), requestWorkItem.getOrder(), requestWorkItem.getNewElement());
-			List<Pharmacy> pharmacies = fetchPharmacies();
-			List<Pharmacist> pharmacists = dao.getPharmacists();
-			RPHWorkItemMapping mapping = rulesService.createFactsAndRunRules(workItem,
-					newPharmacyPharmacistWrapper(pharmacies, pharmacists));
+			RPHWorkItemMapping mapping = callRulesService(workItem);
 			dao.insertWorkItem(workItem);
 			for (LineItemType lineItem : requestWorkItem.getOrder().getLineItems())
 				lineItem.setOrderID(requestWorkItem.getOrder().getOrderID());
@@ -80,10 +79,19 @@ public class PharmacyController {
 	@RequestMapping(value = "/modifyWorkItem", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Status modifyWorkItem(@RequestBody ModifyWorkItemRequestParam modifyWorkItemParam) {
 		try {
-			if (modifyWorkItemParam.getStatus().equals(StatusCodes.CANCEL.status())
-					|| modifyWorkItemParam.getStatus().equals(StatusCodes.REVOKE.status())) {
+			String status = modifyWorkItemParam.getStatus();
+			String orderId = modifyWorkItemParam.getOrderId();
+			if (status.equals(CANCEL.status()) || status.equals(REVOKE.status())) {
 				dao.modifyOrderStatus(modifyWorkItemParam);
 				dao.deleteOrderFromMapping(modifyWorkItemParam.getOrderId());
+				if (status.equals(REVOKE.status())) {
+					List<WorkItemRequestType> workItems = dao.getWorkItems(orderId);
+					List<LineItemType> lineItems = dao.getLineItems(orderId);
+					WorkItemRequestType workItem = workItems.get(0);
+					workItem.getOrder().getLineItems().addAll(lineItems);
+					RPHWorkItemMapping mapping = callRulesService(workItem);
+					dao.insertRphMapping(Arrays.asList(mapping));
+				}
 			} else {
 				return new Status(StatusCodes.FAILED.status(), "Please give a valid status to modify either CANCEL or REVOKE");
 			}
@@ -141,6 +149,14 @@ public class PharmacyController {
 		} catch (Exception e) {
 			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
 		}
+	}
+
+	private RPHWorkItemMapping callRulesService(WorkItemRequestType workItem) {
+		List<Pharmacy> pharmacies = fetchPharmacies();
+		List<Pharmacist> pharmacists = dao.getPharmacists();
+		RPHWorkItemMapping mapping = rulesService.createFactsAndRunRules(workItem,
+				newPharmacyPharmacistWrapper(pharmacies, pharmacists));
+		return mapping;
 	}
 
 	private void convertJsonToString(WorkItemRequestTypeList workItemList, ObjectMapper mapper)
