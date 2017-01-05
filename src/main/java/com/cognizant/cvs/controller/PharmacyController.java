@@ -33,7 +33,7 @@ public class PharmacyController {
 	public DAOManager dao;
 
 	private static String workItemFileName = "C:/John/PharmacyJson/WorkItemList.json";
-	private static String pharmacyListFileName = "C:/John/PharmacyJson/PharmacyList.json";
+
 	
 	private RulesService rulesService = new RulesServiceImpl();
 
@@ -169,35 +169,4 @@ public class PharmacyController {
 		return jsonObject;
 	}
 	
-	
-
-	/*@RequestMapping(value = "/pharmacyList", method = RequestMethod.GET, headers = "Accept=application/json")
-	public PharmacyList getPharmacyList() throws Exception {
-		PharmacyList listOfPharmacys = new PharmacyList();
-		listOfPharmacys = getAllPharmacyList();
-		return listOfPharmacys;
 	}
-
-	@RequestMapping(value = "/pharmacistList", method = RequestMethod.GET, headers = "Accept=application/json")
-	public List<Pharmacist> getPharmacistList() throws Exception {
-		List<Pharmacist> pharmacistList = new ArrayList<Pharmacist>();
-		PharmacyList pharmacyList = getAllPharmacyList();
-		for (Pharmacy pharmacy : pharmacyList.getPharmacyList()) {
-			for (Pharmacist pharmacist : pharmacy.getPharmacists()) {
-				pharmacistList.add(pharmacist);
-			}
-		}
-		return pharmacistList;
-	}
-
-	public PharmacyList getAllPharmacyList() throws Exception {
-		PharmacyList pharmacyList = new PharmacyList();
-		Object pharmacyListJsonObject = readFromFile(pharmacyListFileName);
-		ObjectMapper mapper = new ObjectMapper();
-		pharmacyList = mapper.readValue(pharmacyListJsonObject.toString(), PharmacyList.class);
-		System.out.println("Pharmacy Object >> " + pharmacyList.toString());
-		return pharmacyList;
-	}*/
-
-
-}

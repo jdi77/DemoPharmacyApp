@@ -68,6 +68,7 @@ public class DAOTest {
 		System.out.println("Pharmacy Work Load " + dao.getPharmacysWorkLoad("cvs1"));
 	}
 	
+	@Ignore
 	@Test
 	public void mappingTableQuery() {
 		DAOManager dao = new DAOManager();
