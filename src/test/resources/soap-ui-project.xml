@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="1a45ff9c-5056-4e5b-94df-a113c6e19f75" activeEnvironment="Default" name="brms-poc" resourceRoot="" soapui-version="5.2.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="656693af-6b94-4b22-93b3-9afa96c6dd51" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://localhost:8080</con:endpoint></con:endpoints><con:resource name="PlaceOrder" path="/DemoPharamacyApp/placeOrder" id="dbbe0e9f-b69a-4801-96ac-f18f7409f34a"><con:settings/><con:parameters/><con:method name="PlaceOrder" id="03668747-7a66-480f-91d4-9e8c50854d1b" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:plac="http://localhost/DemoPharamacyApp/placeOrder">plac:Response</con:element></con:representation><con:request name="Request 1" id="d487297b-7d28-426e-9d04-74f7188601eb" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8080</con:endpoint><con:request>{
+	"workItemID": "1",
+	"workItemStatus": "ORDER",
+	"order": {
+		"orderStatus": "ORDER",
+		"orderID": "2",
+		"clientID": "abc",
+		"prescriberDetails": {
+			"name": "p-name",
+			"prescriberId": "1",
+			"state": "NH"
+		},
+		"lineItems": [{
+			"drugName": "xyz",
+			"quantity": "10",
+			"rphId": "1"
+		}]
+	},
+	"newElement": "newElement"
+}</con:request><con:originalUri>http://localhost/DemoPharamacyApp/placeOrder</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="modifyWorkItem" path="/DemoPharamacyApp/modifyWorkItem" id="36bd7a7e-3c27-42b7-b17a-de482ce4482d"><con:settings/><con:parameters/><con:method name="Method 1" id="a08d81b3-af69-4dbb-a68d-692becfb8e7d" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:mod="http://localhost/DemoPharamacyApp/modifyWorkItem">mod:Response</con:element></con:representation><con:request name="Request 1" id="305f20b5-3e44-49fd-b4c8-a4aeac1d15a5" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8080</con:endpoint><con:request>{
+	"orderId":"1",
+	"rphId":"1",
+	"status":"REVOKE"	
+}</con:request><con:originalUri>http://localhost/DemoPharamacyApp/modifyWorkItem</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="getPharmacyLoad" path="/DemoPharamacyApp/getPharmacyLoad/4" id="4ef13731-37f1-4641-be40-aca7e064f2b6"><con:settings/><con:parameters/><con:method name="Method 1" id="ec09dee3-e4a0-4dd7-be7a-770f1a7ca136" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/DemoPharamacyApp/getPharmacyLoad/1">ns:Response</con:element></con:representation><con:request name="Request 1" id="a5de4add-e7c8-451c-9a8a-c8f1ee7aa1c6" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8080</con:endpoint><con:request/><con:originalUri>http://localhost/DemoPharamacyApp/getPharmacyLoad/1</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
