@@ -63,7 +63,7 @@ public class PharmacyController {
 				lineItem.setOrderID(requestWorkItem.getOrder().getOrderID());
 			dao.insertLineItems(requestWorkItem.getOrder().getLineItems());
 			dao.insertRphMapping(Arrays.asList(mapping));
-			return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted");
+			return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted to the Pharmacist : " +mapping.getPharmacistId());
 		} catch (Exception e) {
 			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
 		}
@@ -85,7 +85,7 @@ public class PharmacyController {
 				dao.modifyOrderStatus(modifyWorkItemParam);
 				dao.deleteOrderFromMapping(modifyWorkItemParam.getOrderId());
 			} else {
-				return new Status(StatusCodes.FAILED.status(), "Please give a valid status to modify");
+				return new Status(StatusCodes.FAILED.status(), "Please give a valid status to modify either CANCEL or REVOKE");
 			}
 			return new Status(StatusCodes.SUCCESS.status(),
 					"The Order : " + modifyWorkItemParam.getOrderId() + " has been " + modifyWorkItemParam.getStatus());
