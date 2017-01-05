@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.parser.JSONParser;
@@ -20,6 +21,7 @@ import com.cognizant.cvs.dao.DAOManager;
 import com.cognizant.cvs.schema.LineItemType;
 import com.cognizant.cvs.schema.Pharmacist;
 import com.cognizant.cvs.schema.Pharmacy;
+import com.cognizant.cvs.schema.RPHWorkItemMapping;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.schema.WorkItemRequestTypeList;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
@@ -50,23 +52,17 @@ public class PharmacyController {
 	@RequestMapping(value = "/placeOrder", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Status placeOrder(@RequestBody WorkItemRequestType requestWorkItem) {
 		try {
-			// Insert WorkItem
 			WorkItemRequestType workItem = new WorkItemRequestType(requestWorkItem.getWorkItemID(),
 					requestWorkItem.getWorkItemStatus(), requestWorkItem.getOrder(), requestWorkItem.getNewElement());
-
 			List<Pharmacy> pharmacies = fetchPharmacies();
 			List<Pharmacist> pharmacists = dao.getPharmacists();
-			rulesService.createFactsAndRunRules(workItem, newPharmacyPharmacistWrapper(pharmacies, pharmacists));
+			RPHWorkItemMapping mapping = rulesService.createFactsAndRunRules(workItem,
+					newPharmacyPharmacistWrapper(pharmacies, pharmacists));
 			dao.insertWorkItem(workItem);
-
-			// LineItem Request Object Json doesnt have OrderID , populating it
-			for (LineItemType lineItem : requestWorkItem.getOrder().getLineItems()) {
+			for (LineItemType lineItem : requestWorkItem.getOrder().getLineItems())
 				lineItem.setOrderID(requestWorkItem.getOrder().getOrderID());
-			}
-
-			// Insert LineItems
 			dao.insertLineItems(requestWorkItem.getOrder().getLineItems());
-
+			dao.insertRphMapping(Arrays.asList(mapping));
 			return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted");
 		} catch (Exception e) {
 			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());

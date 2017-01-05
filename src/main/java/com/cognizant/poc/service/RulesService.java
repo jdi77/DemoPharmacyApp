@@ -1,5 +1,6 @@
 package com.cognizant.poc.service;
 
+import com.cognizant.cvs.schema.RPHWorkItemMapping;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.vo.PharmacyPharmacistWrapper;
 
@@ -8,6 +9,6 @@ import com.cognizant.cvs.vo.PharmacyPharmacistWrapper;
  */
 public interface RulesService {
 
-	void createFactsAndRunRules(WorkItemRequestType requestWorkItem, PharmacyPharmacistWrapper wrapper);
+	RPHWorkItemMapping createFactsAndRunRules(WorkItemRequestType requestWorkItem, PharmacyPharmacistWrapper wrapper);
 
 }
