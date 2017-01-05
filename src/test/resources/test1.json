@@ -1,0 +1,20 @@
+{
+	"workItemID": "1",
+	"workItemStatus": "ORDER",
+	"order": {
+		"orderStatus": "ORDER",
+		"orderID": "1",
+		"clientID": "abc",
+		"prescriberDetails": {
+			"name": "p-name",
+			"prescriberId": "1",
+			"state": "NH"
+		},
+		"lineItems": [{
+			"drugName": "xyz",
+			"quantity": "10",
+			"rphId": "1"
+		}]
+	},
+	"newElement": "newElement"
+}

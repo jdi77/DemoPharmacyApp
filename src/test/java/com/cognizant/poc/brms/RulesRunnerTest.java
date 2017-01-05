@@ -8,8 +8,11 @@ import com.cognizant.cvs.poc.routing_rules.Rph;
 import com.cognizant.cvs.poc.routing_rules.Store;
 import com.cognizant.cvs.poc.routing_rules.WorkItem;
 import com.cognizant.poc.brms.impl.RulesRunnerImpl;
-import com.cognizant.poc.brms.impl.RulesServiceImpl;
+import com.cognizant.poc.service.impl.RulesServiceImpl;
 
+/**
+ * @author Tejaswi Alluri
+ */
 public class RulesRunnerTest extends RulesRunnerTestBase {
 
 	private RulesRunner rulesRunner = new RulesRunnerImpl();
@@ -30,8 +33,8 @@ public class RulesRunnerTest extends RulesRunnerTestBase {
 		Rph rph2 = newRph("2", "NH", "abc", "1");
 		Rph rph3 = newRph("3", "CO", "xyz_c", "2");
 		Rph rph4 = newRph("4", "CO", "abc", "2");
-		Rph rph5 = newRph("5", "NH", "ghs", "3");
-		Rph rph6 = newRph("6", "NH", "abc", "3");
+		Rph rph5 = newRph("5", "CO", "ghs", "3");
+		Rph rph6 = newRph("6", "CO", "abc", "3");
 		Rph rph7 = newRph("7", "NH", "pog", "4");
 		Rph rph8 = newRph("8", "NH", "xyz_c", "4");
 		Store store1 = newStore("1", "NH", asList(rph1, rph2), false, 10);

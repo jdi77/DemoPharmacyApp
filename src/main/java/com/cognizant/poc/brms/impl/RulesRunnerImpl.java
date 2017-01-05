@@ -11,6 +11,9 @@ import org.kie.internal.command.CommandFactory;
 
 import com.cognizant.poc.brms.RulesRunner;
 
+/**
+ * @author Tejaswi Alluri
+ */
 public class RulesRunnerImpl implements RulesRunner {
 
 	@SuppressWarnings("rawtypes")

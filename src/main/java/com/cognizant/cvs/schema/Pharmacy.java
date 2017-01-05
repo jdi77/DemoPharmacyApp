@@ -1,12 +1,10 @@
 package com.cognizant.cvs.schema;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Pharmacy {
 
 	private String pharmacyId;
 	private String state;
+	private int availability;
 
 	public Pharmacy(String pharmacyId, String state) {
 		super();
@@ -35,10 +33,17 @@ public class Pharmacy {
 		this.state = state;
 	}
 
-	@Override
-	public String toString() {
-		return "RphPharmacy [pharmacyId=" + pharmacyId + ", state=" + state + "]";
+	public int getAvailability() {
+		return availability;
 	}
 
+	public void setAvailability(int availability) {
+		this.availability = availability;
+	}
+
+	@Override
+	public String toString() {
+		return "Pharmacy [pharmacyId=" + pharmacyId + ", state=" + state + ", availability=" + availability + "]";
+	}
 
 }

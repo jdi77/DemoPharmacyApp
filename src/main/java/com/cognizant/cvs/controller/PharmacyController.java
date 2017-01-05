@@ -1,9 +1,12 @@
 package com.cognizant.cvs.controller;
 
+import static com.cognizant.cvs.vo.PharmacyPharmacistWrapper.newPharmacyPharmacistWrapper;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.parser.JSONParser;
@@ -16,13 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.cvs.dao.DAOManager;
 import com.cognizant.cvs.schema.LineItemType;
+import com.cognizant.cvs.schema.Pharmacist;
+import com.cognizant.cvs.schema.Pharmacy;
+import com.cognizant.cvs.schema.RPHWorkItemMapping;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.schema.WorkItemRequestTypeList;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 import com.cognizant.cvs.vo.Status;
 import com.cognizant.cvs.vo.StatusCodes;
-import com.cognizant.poc.brms.RulesService;
-import com.cognizant.poc.brms.impl.RulesServiceImpl;
+import com.cognizant.poc.service.RulesService;
+import com.cognizant.poc.service.impl.RulesServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,7 +40,6 @@ public class PharmacyController {
 
 	private static String workItemFileName = "C:/John/PharmacyJson/WorkItemList.json";
 
-	
 	private RulesService rulesService = new RulesServiceImpl();
 
 	/**
@@ -47,28 +52,24 @@ public class PharmacyController {
 	@RequestMapping(value = "/placeOrder", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Status placeOrder(@RequestBody WorkItemRequestType requestWorkItem) {
 		try {
-			// Insert WorkItem
 			WorkItemRequestType workItem = new WorkItemRequestType(requestWorkItem.getWorkItemID(),
 					requestWorkItem.getWorkItemStatus(), requestWorkItem.getOrder(), requestWorkItem.getNewElement());
-
-			rulesService.createFactsAndRunRules(workItem);
+			List<Pharmacy> pharmacies = fetchPharmacies();
+			List<Pharmacist> pharmacists = dao.getPharmacists();
+			RPHWorkItemMapping mapping = rulesService.createFactsAndRunRules(workItem,
+					newPharmacyPharmacistWrapper(pharmacies, pharmacists));
 			dao.insertWorkItem(workItem);
-
-			// LineItem Request Object Json doesnt have OrderID , populating it
-			for (LineItemType lineItem : requestWorkItem.getOrder().getLineItems()) {
+			for (LineItemType lineItem : requestWorkItem.getOrder().getLineItems())
 				lineItem.setOrderID(requestWorkItem.getOrder().getOrderID());
-			}
-
-			// Insert LineItems
 			dao.insertLineItems(requestWorkItem.getOrder().getLineItems());
-
+			dao.insertRphMapping(Arrays.asList(mapping));
 			return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted");
 		} catch (Exception e) {
 			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
 		}
 
 	}
-	
+
 	/**
 	 * Modify the existing workItem status either to CANCEL or REVOKE
 	 * 
@@ -95,7 +96,7 @@ public class PharmacyController {
 
 	/**
 	 * Place workItem Request. Inserts data as a JSON file in local system
-	 *  
+	 * 
 	 * @param requestWorkItem
 	 * @return
 	 * @throws Exception
@@ -124,8 +125,7 @@ public class PharmacyController {
 			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
 		}
 	}
-	
-	
+
 	/**
 	 * Get the workLoad of a particular pharamacy
 	 * 
@@ -133,7 +133,7 @@ public class PharmacyController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getPharmacyLoad/{pharmacyId}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public Status getPhamracyLoad(@PathVariable String pharmacyId){
+	public Status getPhamracyLoad(@PathVariable String pharmacyId) {
 		try {
 			Integer workLoad = dao.getPharmacysWorkLoad(pharmacyId);
 			return new Status(StatusCodes.SUCCESS.status(),
@@ -162,11 +162,46 @@ public class PharmacyController {
 		try {
 
 			JSONParser parser = new JSONParser();
-			jsonObject = parser.parse(new FileReader(fileName));		
+			jsonObject = parser.parse(new FileReader(fileName));
 		} catch (Exception e) {
 			System.out.println("Caught a exception :" + e.getMessage());
 		}
 		return jsonObject;
 	}
-	
+
+	private List<Pharmacy> fetchPharmacies() {
+		List<Pharmacy> pharmacies = dao.getPharmacys();
+		for (Pharmacy pharmacy : pharmacies) {
+			int workload = dao.getPharmacysWorkLoad(pharmacy.getPharmacyId());
+			int availability = 100000 - workload;
+			pharmacy.setAvailability(availability);
+		}
+		return pharmacies;
 	}
+
+	/*
+	 * @RequestMapping(value = "/pharmacyList", method = RequestMethod.GET,
+	 * headers = "Accept=application/json") public PharmacyList
+	 * getPharmacyList() throws Exception { PharmacyList listOfPharmacys = new
+	 * PharmacyList(); listOfPharmacys = getAllPharmacyList(); return
+	 * listOfPharmacys; }
+	 * 
+	 * @RequestMapping(value = "/pharmacistList", method = RequestMethod.GET,
+	 * headers = "Accept=application/json") public List<Pharmacist>
+	 * getPharmacistList() throws Exception { List<Pharmacist> pharmacistList =
+	 * new ArrayList<Pharmacist>(); PharmacyList pharmacyList =
+	 * getAllPharmacyList(); for (Pharmacy pharmacy :
+	 * pharmacyList.getPharmacyList()) { for (Pharmacist pharmacist :
+	 * pharmacy.getPharmacists()) { pharmacistList.add(pharmacist); } } return
+	 * pharmacistList; }
+	 * 
+	 * public PharmacyList getAllPharmacyList() throws Exception { PharmacyList
+	 * pharmacyList = new PharmacyList(); Object pharmacyListJsonObject =
+	 * readFromFile(pharmacyListFileName); ObjectMapper mapper = new
+	 * ObjectMapper(); pharmacyList =
+	 * mapper.readValue(pharmacyListJsonObject.toString(), PharmacyList.class);
+	 * System.out.println("Pharmacy Object >> " + pharmacyList.toString());
+	 * return pharmacyList; }
+	 */
+
+}
