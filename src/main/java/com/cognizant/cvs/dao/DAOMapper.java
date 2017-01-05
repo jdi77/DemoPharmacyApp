@@ -5,6 +5,7 @@ import java.util.List;
 import com.cognizant.cvs.schema.LineItemType;
 import com.cognizant.cvs.schema.Pharmacist;
 import com.cognizant.cvs.schema.Pharmacy;
+import com.cognizant.cvs.schema.RPHWorkItemMapping;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 
@@ -28,4 +29,5 @@ public interface DAOMapper {
 	 
 	 public void deleteOrderFromMapping(String orderId);
 
+	 public void insertRphMapping(List<RPHWorkItemMapping> rphWorkItemMapping);
 }

@@ -10,6 +10,7 @@ import com.cognizant.cvs.dao.DAOManager;
 import com.cognizant.cvs.schema.LineItemType;
 import com.cognizant.cvs.schema.OrderType;
 import com.cognizant.cvs.schema.PrescriberDetailsType;
+import com.cognizant.cvs.schema.RPHWorkItemMapping;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 import com.cognizant.cvs.vo.StatusCodes;
@@ -65,5 +66,14 @@ public class DAOTest {
 		System.out.println("Pharmacsy List : " + dao.getPharmacys());
 
 		System.out.println("Pharmacy Work Load " + dao.getPharmacysWorkLoad("cvs1"));
+	}
+	
+	@Test
+	public void mappingTableQuery() {
+		DAOManager dao = new DAOManager();
+		List<RPHWorkItemMapping> rphMappingList = new ArrayList<RPHWorkItemMapping>();
+		RPHWorkItemMapping mapping1 = new RPHWorkItemMapping("person2", "orderID2");
+		rphMappingList.add(mapping1);
+		dao.insertRphMapping(rphMappingList);
 	}
 }

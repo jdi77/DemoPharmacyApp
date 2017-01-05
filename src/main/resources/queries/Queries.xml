@@ -95,5 +95,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from pharmacy.rph_workitem_mapping where orderId= #{orderId}
 	</delete>
 
+	<insert id="insertRphMapping" parameterType="java.util.List">
+		INSERT
+		INTO pharmacy.rph_workitem_mapping(pharmacistId,orderId) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.pharmacistId},#{item.orderId})
+		</foreach>
+	</insert>
 	
 </mapper>

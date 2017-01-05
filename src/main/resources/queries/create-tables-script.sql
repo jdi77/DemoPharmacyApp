@@ -52,10 +52,11 @@ CREATE TABLE pharmacy.`rph_workitem_mapping` (
   `pharmacistid` varchar(45) NOT NULL,
   `orderId` varchar(45) NOT NULL,
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `pharmacistid_UNIQUE` (`pharmacistid`),
   UNIQUE KEY `orderId_UNIQUE` (`orderId`),
+  KEY `FK_pharmacistId_idx` (`pharmacistid`),
   CONSTRAINT `FK_orderID` FOREIGN KEY (`orderId`) REFERENCES `workitem` (`orderID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_pharmacistId` FOREIGN KEY (`pharmacistid`) REFERENCES `pharmacist` (`pharmacistId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
 
 COMMIT;
