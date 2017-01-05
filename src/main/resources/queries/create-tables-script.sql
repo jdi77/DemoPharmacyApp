@@ -1,3 +1,5 @@
+CREATE DATABASE `pharmacy` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
 CREATE TABLE pharmacy.`workitem` (
   `workItemID` varchar(45) NOT NULL,
   `workItemStatus` varchar(45) DEFAULT NULL,
@@ -12,15 +14,17 @@ CREATE TABLE pharmacy.`workitem` (
   PRIMARY KEY (`workItemID`,`orderID`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `orderID_UNIQUE` (`orderID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
-CREATE TABLE PHARMACY.`lineitems` (
+CREATE TABLE pharmacy.`lineitems` (
   `orderID` varchar(45) DEFAULT NULL,
   `drugName` varchar(45) DEFAULT NULL,
   `quantity` varchar(45) DEFAULT NULL,
-  `rphId` varchar(45) DEFAULT NULL
+  `rphId` varchar(45) DEFAULT NULL,
+  KEY `FK_WorkitemOrderID_idx` (`orderID`),
+  CONSTRAINT `FK_WorkitemOrderID` FOREIGN KEY (`orderID`) REFERENCES `workitem` (`orderID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE pharmacy.`pharmacy` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,7 +35,6 @@ CREATE TABLE pharmacy.`pharmacy` (
   UNIQUE KEY `state_UNIQUE` (`state`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE pharmacy.`pharmacist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pharmacistId` varchar(45) NOT NULL,
@@ -40,9 +43,9 @@ CREATE TABLE pharmacy.`pharmacist` (
   `pharmacyId` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`pharmacistId`),
   UNIQUE KEY `pharmacistId_UNIQUE` (`pharmacistId`),
-  UNIQUE KEY `pharmacyId_UNIQUE` (`pharmacyId`),
+  KEY `FK_PharmacyId_idx` (`pharmacyId`),
   CONSTRAINT `FK_PharmacyId` FOREIGN KEY (`pharmacyId`) REFERENCES `pharmacy` (`pharmacyID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 CREATE TABLE pharmacy.`rph_workitem_mapping` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -53,5 +56,6 @@ CREATE TABLE pharmacy.`rph_workitem_mapping` (
   UNIQUE KEY `orderId_UNIQUE` (`orderId`),
   CONSTRAINT `FK_orderID` FOREIGN KEY (`orderId`) REFERENCES `workitem` (`orderID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_pharmacistId` FOREIGN KEY (`pharmacistid`) REFERENCES `pharmacist` (`pharmacistId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
 COMMIT;
