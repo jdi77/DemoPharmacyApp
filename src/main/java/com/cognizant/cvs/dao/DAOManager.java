@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.cognizant.cvs.schema.LineItemType;
 import com.cognizant.cvs.schema.Pharmacist;
 import com.cognizant.cvs.schema.Pharmacy;
+import com.cognizant.cvs.schema.RPHWorkItemMapping;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 
@@ -52,6 +53,11 @@ public class DAOManager {
 	
 	public void deleteOrderFromMapping(String orderId) {
 		daoMapper.deleteOrderFromMapping(orderId);
+		sqlSession.commit();
+	}
+	
+	public void insertRphMapping(List<RPHWorkItemMapping> rphWorkItemMapping){
+		daoMapper.insertRphMapping(rphWorkItemMapping);
 		sqlSession.commit();
 	}
 }
