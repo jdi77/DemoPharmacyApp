@@ -16,8 +16,8 @@ public class DAOManager {
 	static SqlSession sqlSession = ConnectionFactory.getSqlSessionFactory().openSession();
 	static DAOMapper daoMapper = sqlSession.getMapper(DAOMapper.class);
 
-	public List<com.cognizant.cvs.schema.WorkItemRequestType> getWorkItems() {
-		return daoMapper.getWorkItems();
+	public List<com.cognizant.cvs.schema.WorkItemRequestType> getWorkItems(String orderId) {
+		return daoMapper.getWorkItems(orderId);
 	}
 
 	public void insertWorkItem(WorkItemRequestType workItem) {
@@ -30,8 +30,8 @@ public class DAOManager {
 		sqlSession.commit();
 	}
 
-	public List<LineItemType> getLineItems() {
-		return daoMapper.getLineItems();
+	public List<LineItemType> getLineItems(String orderId) {
+		return daoMapper.getLineItems(orderId);
 	}
 
 	public void modifyOrderStatus(ModifyWorkItemRequestParam modifyOrder) {

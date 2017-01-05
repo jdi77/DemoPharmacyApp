@@ -11,13 +11,13 @@ import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 
 public interface DAOMapper {
 		
-	 public List<WorkItemRequestType> getWorkItems();
+	 public List<WorkItemRequestType> getWorkItems(String orderId);
 	 
 	 public void insertWorkItem(WorkItemRequestType workItem);
 	 
 	 public void insertLineItems(List<LineItemType> lineItems);
 	 
-	 public List<LineItemType> getLineItems();
+	 public List<LineItemType> getLineItems(String orderId);
 	 
 	 public void modifyOrderStatus(ModifyWorkItemRequestParam modifyOrder);
 	 

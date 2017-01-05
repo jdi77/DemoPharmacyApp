@@ -18,7 +18,7 @@ import com.cognizant.cvs.vo.StatusCodes;
 
 public class DAOTest {
 
-	@Ignore
+	//@Ignore
 	@Test
 	public void testDatabaseQueries() {
 		DAOManager dao = new DAOManager();
@@ -37,13 +37,13 @@ public class DAOTest {
 
 		dao.insertWorkItem(workItem);
 
-		List<com.cognizant.cvs.schema.WorkItemRequestType> category = dao.getWorkItems();
+		List<com.cognizant.cvs.schema.WorkItemRequestType> category = dao.getWorkItems("orderID77");
 		System.out.println("WorkItems o/p : " + category.toString());
 
-		System.out.println(" Get lineItems >> " + dao.getLineItems());
+		System.out.println(" Get lineItems >> " + dao.getLineItems("orderID77"));
 		dao.insertLineItems(listOfLineItems);
 
-		System.out.println(" Get lineItems >> " + dao.getLineItems());
+		System.out.println(" Get lineItems >> " + dao.getLineItems("orderID77"));
 
 	}
 	
@@ -53,7 +53,7 @@ public class DAOTest {
 		DAOManager dao = new DAOManager();
 		ModifyWorkItemRequestParam modifyWorkItem = new ModifyWorkItemRequestParam("orderID1","rphId1",StatusCodes.CANCEL.status());
 		dao.modifyOrderStatus(modifyWorkItem);
-		List<com.cognizant.cvs.schema.WorkItemRequestType> category = dao.getWorkItems();
+		List<com.cognizant.cvs.schema.WorkItemRequestType> category = dao.getWorkItems("orderID1");
 		System.out.println("WorkItems o/p : " + category.toString());
 	}
 	
