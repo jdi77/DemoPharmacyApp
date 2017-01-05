@@ -1,30 +1,35 @@
 package com.cognizant.poc.brms.impl;
 
+import static org.kie.internal.command.CommandFactory.newFireAllRules;
+import static org.kie.internal.command.CommandFactory.newInsertElements;
+
+import java.util.ArrayList;
 import java.util.List;
 
-import org.kie.api.KieServices;
-import org.kie.api.builder.ReleaseId;
-import org.kie.api.command.Command;
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
-import org.kie.internal.command.CommandFactory;
+import org.springframework.core.convert.converter.Converter;
 
+import com.cognizant.cvs.poc.routing_rules.WorkItem;
+import com.cognizant.cvs.schema.WorkItemRequestType;
+import com.cognizant.poc.brms.RulesRunner;
 import com.cognizant.poc.brms.RulesService;
+import com.cognizant.poc.converter.WorkItemRequestToFactConverter;
 
 public class RulesServiceImpl implements RulesService {
 
-	@SuppressWarnings("rawtypes")
+	private RulesRunner rulesRunner = new RulesRunnerImpl();
+	private Converter<WorkItemRequestType, WorkItem> workItemConverter = new WorkItemRequestToFactConverter();
+
 	@Override
-	public void runRules(List<? extends Command> facts) {
-		KieServices kieServices = KieServices.Factory.get();
-		ReleaseId releaseId = kieServices.newReleaseId("com.cognizant.cvs.poc", "routing-rules", "1.0");
-		KieContainer container = kieServices.newKieContainer(releaseId);
-		for (AgendaGroup agendaGroup : AgendaGroup.values()) {
-			KieSession session = container.newKieSession();
-			session.getAgenda().getAgendaGroup(agendaGroup.getValue()).setFocus();
-			session.execute(CommandFactory.newBatchExecution(facts));
-			session.dispose();
-		}
+	public void createFactsAndRunRules(WorkItemRequestType requestWorkItem) {
+		WorkItem workItem = workItemConverter.convert(requestWorkItem);
+		rulesRunner.runRules(asList(newInsertElements(asList(workItem)), newFireAllRules()));
+	}
+
+	private <T> List<T> asList(@SuppressWarnings("unchecked") T... objects) {
+		List<T> list = new ArrayList<T>();
+		for (T object : objects)
+			list.add(object);
+		return list;
 	}
 
 }

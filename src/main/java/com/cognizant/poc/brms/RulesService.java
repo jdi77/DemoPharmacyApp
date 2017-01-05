@@ -1,12 +1,9 @@
 package com.cognizant.poc.brms;
 
-import java.util.List;
-
-import org.kie.api.command.Command;
+import com.cognizant.cvs.schema.WorkItemRequestType;
 
 public interface RulesService {
 
-	@SuppressWarnings("rawtypes")
-	void runRules(List<? extends Command> facts);
+	void createFactsAndRunRules(WorkItemRequestType requestWorkItem);
 
 }
