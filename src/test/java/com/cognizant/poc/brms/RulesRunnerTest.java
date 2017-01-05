@@ -7,17 +7,18 @@ import com.cognizant.cvs.poc.routing_rules.LineItem;
 import com.cognizant.cvs.poc.routing_rules.Rph;
 import com.cognizant.cvs.poc.routing_rules.Store;
 import com.cognizant.cvs.poc.routing_rules.WorkItem;
+import com.cognizant.poc.brms.impl.RulesRunnerImpl;
 import com.cognizant.poc.brms.impl.RulesServiceImpl;
 
-public class RulesServiceTest extends RulesServiceTestBase {
+public class RulesRunnerTest extends RulesRunnerTestBase {
 
-	private RulesService rulesService = new RulesServiceImpl();
+	private RulesRunner rulesRunner = new RulesRunnerImpl();
 
 	public void testWorkItemNeedsCertification() {
 		LineItem lineItem = newLineItem("1", "xyz", "NH", "1");
 		WorkItem workItem = newWorkItem("1", "abc", null, asList(lineItem), "NH");
 
-		rulesService.runRules(asList(newInsertElements(asList(workItem)), newFireAllRules()));
+		rulesRunner.runRules(asList(newInsertElements(asList(workItem)), newFireAllRules()));
 		assertEquals("QUALIFIED", workItem.getStatus());
 		assertTrue(workItem.getCertificationNeeded());
 	}
@@ -38,7 +39,7 @@ public class RulesServiceTest extends RulesServiceTestBase {
 		Store store3 = newStore("3", "CO", asList(rph5, rph6), false, 10);
 		Store store4 = newStore("4", "NH", asList(rph7, rph8), false, 20);
 
-		rulesService.runRules(asList(newInsertElements(asList(workItem, store1, store2, store3, store4)), newFireAllRules()));
+		rulesRunner.runRules(asList(newInsertElements(asList(workItem, store1, store2, store3, store4)), newFireAllRules()));
 		assertTrue(workItem.getCertificationNeeded());
 		assertTrue(store4.isShortlisted());
 		assertTrue(store1.isShortlisted());

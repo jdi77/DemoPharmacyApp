@@ -20,6 +20,8 @@ import com.cognizant.cvs.schema.WorkItemRequestTypeList;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 import com.cognizant.cvs.vo.Status;
 import com.cognizant.cvs.vo.StatusCodes;
+import com.cognizant.poc.brms.RulesService;
+import com.cognizant.poc.brms.impl.RulesServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,6 +34,7 @@ public class PharmacyController {
 	private static String workItemFileName = "C:/John/PharmacyJson/WorkItemList.json";
 	private static String pharmacyListFileName = "C:/John/PharmacyJson/PharmacyList.json";
 	
+	private RulesService rulesService = new RulesServiceImpl();
 
 	/**
 	 * Place workItem Request. Inserts data in MySQL Database
@@ -47,6 +50,7 @@ public class PharmacyController {
 		WorkItemRequestType workItem = new WorkItemRequestType(requestWorkItem.getWorkItemID(),
 				requestWorkItem.getWorkItemStatus(), requestWorkItem.getOrder(), requestWorkItem.getNewElement());
 
+		rulesService.createFactsAndRunRules(workItem);
 		dao.insertWorkItem(workItem);
 		
 		//LineItem Request Object Json doesnt have OrderID , populating it

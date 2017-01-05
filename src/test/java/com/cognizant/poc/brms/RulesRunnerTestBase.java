@@ -10,7 +10,7 @@ import com.cognizant.cvs.poc.routing_rules.WorkItem;
 
 import junit.framework.TestCase;
 
-public class RulesServiceTestBase extends TestCase {
+public class RulesRunnerTestBase extends TestCase {
 
 	protected WorkItem newWorkItem(String id, String clientId, String status, List<LineItem> lineItems, String state) {
 		WorkItem workItem = new WorkItem(id, clientId, status, lineItems, state, false);
