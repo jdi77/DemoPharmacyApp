@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</update>
 	
-	<resultMap id="Pharmacist" type="com.cognizant.cvs.schema.RphPharmacist">
+	<resultMap id="Pharmacist" type="com.cognizant.cvs.schema.Pharmacist">
 		<result property="pharmacistId" column="pharmacistId" />
 		<result property="state" column="state" />
 		<result property="certification" column="certification" />
@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from pharmacy.pharmacist
 	</select>
 		
-	<resultMap id="Pharmacys" type="com.cognizant.cvs.schema.RphPharmacy">
+	<resultMap id="Pharmacys" type="com.cognizant.cvs.schema.Pharmacy">
 		<result property="pharmacyId" column="pharmacyId" />
 		<result property="state" column="state" />		
 	</resultMap>
@@ -90,6 +90,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getPharmacysWorkLoad" resultType="int" parameterType="java.lang.String">
 		select count(*) from pharmacy.rph_workitem_mapping m,pharmacy.pharmacist p where p.pharmacyId= #{pharmacyId} and m.pharmacistid=p.pharmacistId;
 	</select>
+	
+	<delete id="deleteOrderFromMapping" parameterType="java.lang.String">
+		delete from pharmacy.rph_workitem_mapping where orderId= #{orderId}
+	</delete>
 
 	
 </mapper>

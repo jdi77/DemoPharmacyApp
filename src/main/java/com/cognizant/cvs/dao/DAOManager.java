@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.cognizant.cvs.schema.LineItemType;
-import com.cognizant.cvs.schema.RphPharmacist;
-import com.cognizant.cvs.schema.RphPharmacy;
+import com.cognizant.cvs.schema.Pharmacist;
+import com.cognizant.cvs.schema.Pharmacy;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 
@@ -38,15 +38,20 @@ public class DAOManager {
 		sqlSession.commit();
 	}
 
-	public List<RphPharmacist> getPharmacist() {
+	public List<Pharmacist> getPharmacist() {
 		return daoMapper.getPharmacist();
 	}
 
-	public List<RphPharmacy> getPharmacys() {
+	public List<Pharmacy> getPharmacys() {
 		return daoMapper.getPharmacys();
 	}
 
 	public int getPharmacysWorkLoad(String pharmacyId) {
 		return daoMapper.getPharmacysWorkLoad(pharmacyId);
+	}
+	
+	public void deleteOrderFromMapping(String orderId) {
+		daoMapper.deleteOrderFromMapping(orderId);
+		sqlSession.commit();
 	}
 }

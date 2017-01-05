@@ -82,6 +82,7 @@ public class PharmacyController {
 			if (modifyWorkItemParam.getStatus().equals(StatusCodes.CANCEL.status())
 					|| modifyWorkItemParam.getStatus().equals(StatusCodes.REVOKE.status())) {
 				dao.modifyOrderStatus(modifyWorkItemParam);
+				dao.deleteOrderFromMapping(modifyWorkItemParam.getOrderId());
 			} else {
 				return new Status(StatusCodes.FAILED.status(), "Please give a valid status to modify");
 			}

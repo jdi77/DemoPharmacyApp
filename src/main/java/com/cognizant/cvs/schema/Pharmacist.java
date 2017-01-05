@@ -1,20 +1,22 @@
 package com.cognizant.cvs.schema;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class RphPharmacist {
-	
+public class Pharmacist {
+
 	private String pharmacistId;
 	private String state;
 	private String certification;
 	private String pharmacyId;
-	public RphPharmacist(String pharmacistId, String state, String certification, String pharmacyId) {
+	public Pharmacist(String pharmacistId, String state, String certification, String pharmacyId) {
 		super();
 		this.pharmacistId = pharmacistId;
 		this.state = state;
 		this.certification = certification;
 		this.pharmacyId = pharmacyId;
 	}
-	public RphPharmacist() {
+	public Pharmacist() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -47,7 +49,4 @@ public class RphPharmacist {
 		return "RphPharmacist [pharmacistId=" + pharmacistId + ", state=" + state + ", certification=" + certification
 				+ ", pharmacyId=" + pharmacyId + "]";
 	}
-	
-	
-
 }

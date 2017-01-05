@@ -3,8 +3,8 @@ package com.cognizant.cvs.dao;
 import java.util.List;
 
 import com.cognizant.cvs.schema.LineItemType;
-import com.cognizant.cvs.schema.RphPharmacist;
-import com.cognizant.cvs.schema.RphPharmacy;
+import com.cognizant.cvs.schema.Pharmacist;
+import com.cognizant.cvs.schema.Pharmacy;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 
@@ -20,10 +20,12 @@ public interface DAOMapper {
 	 
 	 public void modifyOrderStatus(ModifyWorkItemRequestParam modifyOrder);
 	 
-	 public List<RphPharmacist> getPharmacist();
+	 public List<Pharmacist> getPharmacist();
 	 
-	 public List<RphPharmacy> getPharmacys();
+	 public List<Pharmacy> getPharmacys();
 	 
 	 public int getPharmacysWorkLoad(String pharmacyId);
+	 
+	 public void deleteOrderFromMapping(String orderId);
 
 }
