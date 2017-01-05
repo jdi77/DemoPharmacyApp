@@ -1,5 +1,8 @@
 package com.cognizant.poc.brms.impl;
 
+/**
+ * @author Tejaswi Alluri
+ */
 public enum AgendaGroup {
 	WORK_ITEM_QUALIFICATION("work-item-qualification"),
 

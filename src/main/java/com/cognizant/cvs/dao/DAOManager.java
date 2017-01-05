@@ -38,7 +38,7 @@ public class DAOManager {
 		sqlSession.commit();
 	}
 
-	public List<Pharmacist> getPharmacist() {
+	public List<Pharmacist> getPharmacists() {
 		return daoMapper.getPharmacist();
 	}
 

@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.kie.api.command.Command;
 
+/**
+ * @author Tejaswi Alluri
+ */
 public interface RulesRunner {
 
 	@SuppressWarnings("rawtypes")

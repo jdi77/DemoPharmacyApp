@@ -60,7 +60,7 @@ public class DAOTest {
 	@Test
 	public void getPharmacist() {
 		DAOManager dao = new DAOManager();
-		System.out.println("Pharmacist List : " + dao.getPharmacist());
+		System.out.println("Pharmacist List : " + dao.getPharmacists());
 
 		System.out.println("Pharmacsy List : " + dao.getPharmacys());
 

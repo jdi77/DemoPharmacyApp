@@ -8,8 +8,11 @@ import com.cognizant.cvs.poc.routing_rules.Rph;
 import com.cognizant.cvs.poc.routing_rules.Store;
 import com.cognizant.cvs.poc.routing_rules.WorkItem;
 import com.cognizant.poc.brms.impl.RulesRunnerImpl;
-import com.cognizant.poc.brms.impl.RulesServiceImpl;
+import com.cognizant.poc.service.impl.RulesServiceImpl;
 
+/**
+ * @author Tejaswi Alluri
+ */
 public class RulesRunnerTest extends RulesRunnerTestBase {
 
 	private RulesRunner rulesRunner = new RulesRunnerImpl();
