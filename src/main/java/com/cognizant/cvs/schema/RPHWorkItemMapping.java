@@ -4,6 +4,7 @@ public class RPHWorkItemMapping {
 
 	private String pharmacistId;
 	private String orderId;
+	private String status;
 
 	public RPHWorkItemMapping(String pharmacistId, String orderId) {
 		super();
@@ -12,7 +13,7 @@ public class RPHWorkItemMapping {
 	}
 
 	public RPHWorkItemMapping() {
-		super();		
+		super();
 	}
 
 	public String getPharmacistId() {
@@ -31,9 +32,17 @@ public class RPHWorkItemMapping {
 		this.orderId = orderId;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "RPHWorkItemMapping [pharmacistId=" + pharmacistId + ", orderId=" + orderId + "]";
+		return "RPHWorkItemMapping [pharmacistId=" + pharmacistId + ", orderId=" + orderId + ", status=" + status + "]";
 	}
 
 }
