@@ -37,7 +37,9 @@ public class RulesServiceImpl implements RulesService {
 		WorkItem workItem = workItemConverter.convert(requestWorkItem);
 		Collection<Store> stores = storeConverter.convert(wrapper);
 		rulesRunner.runRules(asList(newInsertElements(stores), newInsertElements(asList(workItem)), newFireAllRules()));
-		return createResultMapping(stores);
+		RPHWorkItemMapping mapping = createResultMapping(stores);
+		mapping.setStatus(workItem.getStatus());
+		return mapping;
 	}
 
 	private RPHWorkItemMapping createResultMapping(Collection<Store> stores) {
