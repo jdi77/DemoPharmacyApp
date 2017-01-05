@@ -5,37 +5,48 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.cognizant.cvs.schema.LineItemType;
+import com.cognizant.cvs.schema.RphPharmacist;
+import com.cognizant.cvs.schema.RphPharmacy;
 import com.cognizant.cvs.schema.WorkItemRequestType;
 import com.cognizant.cvs.vo.ModifyWorkItemRequestParam;
 
 public class DAOManager {
-	
+
 	static SqlSession sqlSession = ConnectionFactory.getSqlSessionFactory().openSession();
 	static DAOMapper daoMapper = sqlSession.getMapper(DAOMapper.class);
 
-	
-	public  List<com.cognizant.cvs.schema.WorkItemRequestType> getWorkItems() {
-        return daoMapper.getWorkItems();
-}
-	
-	 public void insertWorkItem(WorkItemRequestType workItem){
-		 daoMapper.insertWorkItem(workItem);
-		 sqlSession.commit();
-	 }
-	 
-	 public void insertLineItems(List<LineItemType> lineItems){
-		 daoMapper.insertLineItems(lineItems);
-		 sqlSession.commit();
-	 }
-	 
-	 public List<LineItemType> getLineItems(){
-		 return daoMapper.getLineItems();
-	 }
-	 
-	 public void modifyOrderStatus(ModifyWorkItemRequestParam modifyOrder){
-		 daoMapper.modifyOrderStatus(modifyOrder);
-		 sqlSession.commit();
-	 }
+	public List<com.cognizant.cvs.schema.WorkItemRequestType> getWorkItems() {
+		return daoMapper.getWorkItems();
+	}
 
+	public void insertWorkItem(WorkItemRequestType workItem) {
+		daoMapper.insertWorkItem(workItem);
+		sqlSession.commit();
+	}
 
+	public void insertLineItems(List<LineItemType> lineItems) {
+		daoMapper.insertLineItems(lineItems);
+		sqlSession.commit();
+	}
+
+	public List<LineItemType> getLineItems() {
+		return daoMapper.getLineItems();
+	}
+
+	public void modifyOrderStatus(ModifyWorkItemRequestParam modifyOrder) {
+		daoMapper.modifyOrderStatus(modifyOrder);
+		sqlSession.commit();
+	}
+
+	public List<RphPharmacist> getPharmacist() {
+		return daoMapper.getPharmacist();
+	}
+
+	public List<RphPharmacy> getPharmacys() {
+		return daoMapper.getPharmacys();
+	}
+
+	public int getPharmacysWorkLoad(String pharmacyId) {
+		return daoMapper.getPharmacysWorkLoad(pharmacyId);
+	}
 }

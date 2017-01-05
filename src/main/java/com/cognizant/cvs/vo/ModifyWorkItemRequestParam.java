@@ -14,7 +14,7 @@ public class ModifyWorkItemRequestParam {
 	}
 
 	public ModifyWorkItemRequestParam() {
-		super();		
+		super();
 	}
 
 	public String getOrderId() {

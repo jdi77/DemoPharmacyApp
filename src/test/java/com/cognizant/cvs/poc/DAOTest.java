@@ -55,4 +55,15 @@ public class DAOTest {
 		List<com.cognizant.cvs.schema.WorkItemRequestType> category = dao.getWorkItems();
 		System.out.println("WorkItems o/p : " + category.toString());
 	}
+	
+	@Ignore
+	@Test
+	public void getPharmacist() {
+		DAOManager dao = new DAOManager();
+		System.out.println("Pharmacist List : " + dao.getPharmacist());
+
+		System.out.println("Pharmacsy List : " + dao.getPharmacys());
+
+		System.out.println("Pharmacy Work Load " + dao.getPharmacysWorkLoad("cvs1"));
+	}
 }

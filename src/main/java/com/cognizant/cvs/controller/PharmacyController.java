@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,24 +45,27 @@ public class PharmacyController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/placeOrder", method = RequestMethod.POST, headers = "Accept=application/json")
-	public Status placeOrder(@RequestBody WorkItemRequestType requestWorkItem) throws Exception {
+	public Status placeOrder(@RequestBody WorkItemRequestType requestWorkItem) {
+		try {
+			// Insert WorkItem
+			WorkItemRequestType workItem = new WorkItemRequestType(requestWorkItem.getWorkItemID(),
+					requestWorkItem.getWorkItemStatus(), requestWorkItem.getOrder(), requestWorkItem.getNewElement());
 
-		// Insert WorkItem	
-		WorkItemRequestType workItem = new WorkItemRequestType(requestWorkItem.getWorkItemID(),
-				requestWorkItem.getWorkItemStatus(), requestWorkItem.getOrder(), requestWorkItem.getNewElement());
+			rulesService.createFactsAndRunRules(workItem);
+			dao.insertWorkItem(workItem);
 
-		rulesService.createFactsAndRunRules(workItem);
-		dao.insertWorkItem(workItem);
-		
-		//LineItem Request Object Json doesnt have OrderID , populating it
-		for(LineItemType lineItem :requestWorkItem.getOrder().getLineItems()){
-			lineItem.setOrderID(requestWorkItem.getOrder().getOrderID());
+			// LineItem Request Object Json doesnt have OrderID , populating it
+			for (LineItemType lineItem : requestWorkItem.getOrder().getLineItems()) {
+				lineItem.setOrderID(requestWorkItem.getOrder().getOrderID());
+			}
+
+			// Insert LineItems
+			dao.insertLineItems(requestWorkItem.getOrder().getLineItems());
+
+			return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted");
+		} catch (Exception e) {
+			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
 		}
-		
-		// Insert LineItems
-		dao.insertLineItems(requestWorkItem.getOrder().getLineItems());
-		
-		return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted");
 
 	}
 	
@@ -73,15 +77,19 @@ public class PharmacyController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/modifyWorkItem", method = RequestMethod.POST, headers = "Accept=application/json")
-	public Status modifyWorkItem(@RequestBody ModifyWorkItemRequestParam modifyWorkItemParam) throws Exception {
-
-		if (modifyWorkItemParam.getStatus().equals(StatusCodes.CANCEL.status()) || modifyWorkItemParam.getStatus().equals(StatusCodes.REVOKE.status())) {			
-			dao.modifyOrderStatus(modifyWorkItemParam);
-		}		
-		else{
-			return new Status(StatusCodes.FAILED.status(), "Please give a valid status to modify");
+	public Status modifyWorkItem(@RequestBody ModifyWorkItemRequestParam modifyWorkItemParam) {
+		try {
+			if (modifyWorkItemParam.getStatus().equals(StatusCodes.CANCEL.status())
+					|| modifyWorkItemParam.getStatus().equals(StatusCodes.REVOKE.status())) {
+				dao.modifyOrderStatus(modifyWorkItemParam);
+			} else {
+				return new Status(StatusCodes.FAILED.status(), "Please give a valid status to modify");
+			}
+			return new Status(StatusCodes.SUCCESS.status(),
+					"The Order : " + modifyWorkItemParam.getOrderId() + " has been " + modifyWorkItemParam.getStatus());
+		} catch (Exception e) {
+			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
 		}
-		return new Status(StatusCodes.SUCCESS.status(), "The Order : " + modifyWorkItemParam.getOrderId() + " has been " +modifyWorkItemParam.getStatus());
 	}
 
 	/**
@@ -92,24 +100,46 @@ public class PharmacyController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/submitWorkItems", method = RequestMethod.POST, headers = "Accept=application/json")
-	public Status submitWorkItems(@RequestBody WorkItemRequestType requestWorkItem) throws Exception {
-		WorkItemRequestTypeList workItemList = new WorkItemRequestTypeList();
+	public Status submitWorkItems(@RequestBody WorkItemRequestType requestWorkItem) {
+		try {
+			WorkItemRequestTypeList workItemList = new WorkItemRequestTypeList();
 
-		ObjectMapper mapper = new ObjectMapper();
-		Object workItemJsonObject = readFromFile(workItemFileName);
+			ObjectMapper mapper = new ObjectMapper();
+			Object workItemJsonObject = readFromFile(workItemFileName);
 
-		workItemList = mapper.readValue(workItemJsonObject.toString(), WorkItemRequestTypeList.class);
-		if (workItemList.getWorkItemRequestTypes().isEmpty()) {
-			List<WorkItemRequestType> newWorkItem = new ArrayList<WorkItemRequestType>();
-			newWorkItem.add(requestWorkItem);			
-			workItemList.setWorkItemRequestTypes(newWorkItem);
-			convertJsonToString(workItemList, mapper);
-		} else {
-			workItemList.getWorkItemRequestTypes().add(requestWorkItem);
-			convertJsonToString(workItemList, mapper);
+			workItemList = mapper.readValue(workItemJsonObject.toString(), WorkItemRequestTypeList.class);
+			if (workItemList.getWorkItemRequestTypes().isEmpty()) {
+				List<WorkItemRequestType> newWorkItem = new ArrayList<WorkItemRequestType>();
+				newWorkItem.add(requestWorkItem);
+				workItemList.setWorkItemRequestTypes(newWorkItem);
+				convertJsonToString(workItemList, mapper);
+			} else {
+				workItemList.getWorkItemRequestTypes().add(requestWorkItem);
+				convertJsonToString(workItemList, mapper);
+			}
+
+			return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted");
+		} catch (Exception e) {
+			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
 		}
-
-		return new Status(StatusCodes.SUCCESS.status(), "WorkItem Submitted");
+	}
+	
+	
+	/**
+	 * Get the workLoad of a particular pharamacy
+	 * 
+	 * @param pharmacyId
+	 * @return
+	 */
+	@RequestMapping(value = "/getPharmacyLoad/{pharmacyId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Status getPhamracyLoad(@PathVariable String pharmacyId){
+		try {
+			Integer workLoad = dao.getPharmacysWorkLoad(pharmacyId);
+			return new Status(StatusCodes.SUCCESS.status(),
+					"The WorkLoad for the Pharmacy  " + pharmacyId + " is :" + workLoad);
+		} catch (Exception e) {
+			return new Status(StatusCodes.SERVER_ERROR.status(), e.getMessage());
+		}
 	}
 
 	private void convertJsonToString(WorkItemRequestTypeList workItemList, ObjectMapper mapper)

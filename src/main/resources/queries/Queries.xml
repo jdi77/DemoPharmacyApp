@@ -66,6 +66,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE orderID = #{orderId}
 	
 	</update>
+	
+	<resultMap id="Pharmacist" type="com.cognizant.cvs.schema.RphPharmacist">
+		<result property="pharmacistId" column="pharmacistId" />
+		<result property="state" column="state" />
+		<result property="certification" column="certification" />
+		<result property="pharmacyId" column="pharmacyId" />
+	</resultMap>
+	
+	<select id="getPharmacist" resultMap="Pharmacist">
+		select * from pharmacy.pharmacist
+	</select>
+		
+	<resultMap id="Pharmacys" type="com.cognizant.cvs.schema.RphPharmacy">
+		<result property="pharmacyId" column="pharmacyId" />
+		<result property="state" column="state" />		
+	</resultMap>
+	
+	<select id="getPharmacys" resultMap="Pharmacys">
+		select * from pharmacy.pharmacy
+	</select>
+	
+	<select id="getPharmacysWorkLoad" resultType="int" parameterType="java.lang.String">
+		select count(*) from pharmacy.rph_workitem_mapping m,pharmacy.pharmacist p where p.pharmacyId= #{pharmacyId} and m.pharmacistid=p.pharmacistId;
+	</select>
 
 	
 </mapper>
