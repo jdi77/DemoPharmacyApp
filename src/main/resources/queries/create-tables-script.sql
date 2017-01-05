@@ -31,9 +31,8 @@ CREATE TABLE pharmacy.`pharmacy` (
   `pharmacyID` varchar(45) NOT NULL,
   `state` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `pharmacyID_UNIQUE` (`pharmacyID`),
-  UNIQUE KEY `state_UNIQUE` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `pharmacyID_UNIQUE` (`pharmacyID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 CREATE TABLE pharmacy.`pharmacist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
