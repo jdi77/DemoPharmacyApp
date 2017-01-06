@@ -18,7 +18,7 @@ import com.cognizant.cvs.vo.StatusCodes;
 
 public class DAOTest {
 
-	//@Ignore
+	@Ignore
 	@Test
 	public void testDatabaseQueries() {
 		DAOManager dao = new DAOManager();
@@ -77,4 +77,5 @@ public class DAOTest {
 		rphMappingList.add(mapping1);
 		dao.insertRphMapping(rphMappingList);
 	}
+	
 }

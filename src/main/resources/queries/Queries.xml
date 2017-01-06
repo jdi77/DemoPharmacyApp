@@ -87,8 +87,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from pharmacy.pharmacy
 	</select>
 	
-	<select id="getPharmacysWorkLoad" resultType="int" parameterType="java.lang.String">
-		select count(*) from pharmacy.rph_workitem_mapping m,pharmacy.pharmacist p where p.pharmacyId= #{pharmacyId} and m.pharmacistid=p.pharmacistId;
+	
+	<resultMap type="com.cognizant.cvs.schema.PharmacyWorkLoadResponse" id="PharmacyWorkLoad">
+			<result property="storeId" column="pharmacyId" />
+			<!-- <result property="storeTotalWorkLoad" column="storeTotalWorkLoad" /> -->
+			<collection property="individualRPHWorkLoadList" ofType="com.cognizant.cvs.schema.RPHWorkLoad">
+				<result property="rphID" column="pharmacistId" />
+				<result property="certification" column="certification" />
+				<collection property="rphWorkItems" ofType="com.cognizant.cvs.schema.RPHWorkItem" >
+					<result property="orderId" column="orderStatus" />
+					<result property="status" column="certification" />
+					<result property="client" column="clientID" />
+					<result property="prescriberId" column="prescriberId" />
+					<result property="prescriberstate" column="prescriberstate" />
+				</collection>				
+			</collection>
+	</resultMap>
+	
+	<select id="getPharmacysWorkLoad" resultMap="PharmacyWorkLoad" parameterType="java.lang.String">
+		select 	p.pharmacyId,
+				p.pharmacistId,
+				p.certification,
+				w.orderID,
+				w.orderStatus,
+				w.clientID,
+				w.prescriberId,
+				w.prescriberstate
+				from pharmacy.rph_workitem_mapping m,pharmacy.pharmacist p,pharmacy.workitem w
+				where w.orderId=m.orderId and w.orderStatus not in ('CANCEL','REVOVKE') and  p.pharmacyId= #{pharmacyId} and m.pharmacistid=p.pharmacistId;	
 	</select>
 	
 	<delete id="deleteOrderFromMapping" parameterType="java.lang.String">

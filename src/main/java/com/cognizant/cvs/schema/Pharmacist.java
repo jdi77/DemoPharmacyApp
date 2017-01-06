@@ -1,8 +1,5 @@
 package com.cognizant.cvs.schema;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Pharmacist {
 
 	private String pharmacistId;

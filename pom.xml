@@ -72,7 +72,7 @@
          <groupId>com.cognizant.cvs.poc</groupId>
          <artifactId>routing-rules</artifactId>
          <version>1.0</version>
-      </dependency>
+      </dependency>           
    </dependencies>
    <build>
       <finalName>DemoPharamacyApp</finalName>
