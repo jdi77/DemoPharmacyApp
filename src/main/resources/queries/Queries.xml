@@ -117,6 +117,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				where w.orderId=m.orderId and w.orderStatus not in ('CANCEL','REVOVKE') and  p.pharmacyId= #{pharmacyId} and m.pharmacistid=p.pharmacistId;	
 	</select>
 	
+	
+	<select id="getPharmacysWorkLoadCount" resultType="int" parameterType="java.lang.String">
+		select count(*) from pharmacy.rph_workitem_mapping m,pharmacy.pharmacist p where p.pharmacyId= #{pharmacyId} and m.pharmacistid=p.pharmacistId;
+	</select>
+	
 	<delete id="deleteOrderFromMapping" parameterType="java.lang.String">
 		delete from pharmacy.rph_workitem_mapping where orderId= #{orderId}
 	</delete>

@@ -147,7 +147,7 @@ public class PharmacyController {
 	private List<Pharmacy> fetchPharmacies() {
 		List<Pharmacy> pharmacies = dao.getPharmacys();
 		for (Pharmacy pharmacy : pharmacies) {			
-			int workload = getStoreWorkLoad(dao.getPharmacysWorkLoad(pharmacy.getPharmacyId()));
+			int workload = dao.getPharmacysWorkLoadCount(pharmacy.getPharmacyId());
 			int availability = 100000 - workload;
 			pharmacy.setAvailability(availability);
 		}

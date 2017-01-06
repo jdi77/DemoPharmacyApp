@@ -52,6 +52,10 @@ public class DAOManager {
 		return daoMapper.getPharmacysWorkLoad(pharmacyId);
 	}
 
+	
+	 public Integer getPharmacysWorkLoadCount(String pharmacyId){
+		 return daoMapper.getPharmacysWorkLoadCount(pharmacyId);
+	 }
 	public void deleteOrderFromMapping(String orderId) {
 		daoMapper.deleteOrderFromMapping(orderId);
 		sqlSession.commit();

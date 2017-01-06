@@ -31,4 +31,8 @@ public interface DAOMapper {
 	 public void insertRphMapping(List<RPHWorkItemMapping> rphWorkItemMapping);
 	 
 	 public PharmacyWorkLoadResponse getPharmacysWorkLoad(String pharmacyId);
+	 
+	 public Integer getPharmacysWorkLoadCount(String pharmacyId);
+	 
+	 
 }
